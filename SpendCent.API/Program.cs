@@ -1,3 +1,4 @@
+using SpendCent.API.Middlewares;
 using SpendCent.Core;
 using SpendCent.Infrastructure;
 
@@ -15,8 +16,9 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-//Routing configuration
+app.UseExceptionHandlingMiddleware(); // Use custom exception handling middleware
 
+//Routing configuration
 app.UseRouting();
 
 
