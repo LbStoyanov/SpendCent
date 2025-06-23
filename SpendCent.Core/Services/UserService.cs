@@ -1,4 +1,5 @@
-﻿using SpendCent.Core.DTOs;
+﻿using AutoMapper;
+using SpendCent.Core.DTOs;
 using SpendCent.Core.Entities;
 using SpendCent.Core.RepositoryContracts;
 using SpendCent.Core.ServiceContracts;
@@ -8,10 +9,12 @@ namespace SpendCent.Core.Services;
 internal class UserService : IUsersService
 {
     private readonly IUsersRepository _usersRepository;
+    private readonly IMapper _mapper;
 
-    public UserService(IUsersRepository usersRepository)
+    public UserService(IUsersRepository usersRepository, IMapper mapper)
     {
         _usersRepository = usersRepository;
+        _mapper = mapper;
     }
 
     public async Task<AuthenticationResponse?> Login(LoginRequest loginRequest)
@@ -23,7 +26,7 @@ internal class UserService : IUsersService
             return null;
         }
 
-        return new AuthenticationResponse(user.UserID, user.Email, user.PersonName, user.Gender, "token", Success: true);
+        return _mapper.Map<AuthenticationResponse>(user) with { Success = true, Token = "token" };
     }
 
     public async Task<AuthenticationResponse?> Register(RegisterRequest registerRequest)
@@ -38,7 +41,7 @@ internal class UserService : IUsersService
 
         if (newUser == null) return null;
 
-        return new AuthenticationResponse(newUser.UserID, newUser.Email, newUser.PersonName,newUser.Gender, "token",Success: true);
+        return _mapper.Map<AuthenticationResponse>(newUser) with { Success = true, Token = "token"};
     }
 }
 
