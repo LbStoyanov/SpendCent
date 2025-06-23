@@ -20,7 +20,7 @@ public class AuthController : ControllerBase
     {
         if (registerRequest == null)
         {
-            return BadRequest("Invalid registration request.");
+            return BadRequest("Invalid registration request!");
         }
 
         var response = await _usersService.Register(registerRequest);
